@@ -74,9 +74,10 @@ private fun EntryContent(navHostController: NavHostController, modifier: Modifie
                     fontSize = 18.sp,
                     textAlign = TextAlign.Center,
                     color = Color.LightGray,
+                    modifier = modifier.padding(bottom = 124.dp)
                 )
                 Spacer(
-                    modifier = Modifier.size(340.dp),
+                    modifier = Modifier.size(160.dp),
 
                     )
 

@@ -13,7 +13,8 @@ data class Match(
     val status: String,
     val minute: String,
     val homeTeam: Team,
-    val awayTeam: Team
+    val awayTeam: Team,
+    val score: Score
 
 )
 
@@ -39,7 +40,8 @@ data class Team(
 
 data class Score(
     val winner: String,
-    val goals: List<GoalsTime>
+    val fullTime: ScoreGoals,
+    val halfTime: ScoreGoals,
 )
 
 data class GoalsTime(
