@@ -5,10 +5,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.footballgeeks.landingPage.LandingPageScreen
+import com.example.footballgeeks.landingPage.presentation.LandingPageViewModel
+import com.example.footballgeeks.landingPage.presentation.ui.LandingPageScreen
 
 @Composable
-fun App(modifier: Modifier = Modifier) {
+fun App(landingPageViewModel: LandingPageViewModel, modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "entry") {
@@ -16,7 +17,7 @@ fun App(modifier: Modifier = Modifier) {
             EntryScreen(navController)
         }
         composable(route= "landingPage") {
-            LandingPageScreen()
+            LandingPageScreen(landingPageViewModel)
         }
     }
     

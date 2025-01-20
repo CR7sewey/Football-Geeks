@@ -1,15 +1,14 @@
-package com.example.footballgeeks.landingPage
+package com.example.footballgeeks.landingPage.presentation.ui
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,11 +16,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -32,12 +31,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
@@ -47,15 +43,19 @@ import com.example.mycinema.common.data.remote.RetroFitClient
 import retrofit2.Call
 import retrofit2.Response
 import coil.size.Size
+import com.example.footballgeeks.landingPage.presentation.LandingPageViewModel
+import retrofit2.Callback
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LandingPageScreen(modifier: Modifier = Modifier) {
+fun LandingPageScreen(landingPageViewModel: LandingPageViewModel, modifier: Modifier = Modifier) {
 
-    var matches by remember { mutableStateOf<List<Match>>(emptyList()) }
+    val uiCurrentGames by landingPageViewModel.uiCurrentGames.collectAsState()
+
+    /*var matches by remember { mutableStateOf<List<Match>>(emptyList()) }
     val apiService = RetroFitClient.retrofit.create(LandingPageService::class.java)
     val callMatchesDTO = apiService.getMatches()
-    callMatchesDTO.enqueue(object : retrofit2.Callback<MatchesDTO> {
+    callMatchesDTO.enqueue(object : Callback<MatchesDTO> {
         override fun onResponse(
             call: Call<MatchesDTO?>,
             response: Response<MatchesDTO?>
@@ -80,22 +80,33 @@ fun LandingPageScreen(modifier: Modifier = Modifier) {
 
         }
     })
-    //val test = listOf<String>("1","2")
-    Log.d("RESPOSTA", matches.toString())
-    LandingScreenContent(matches)
+    //val test = listOf<String>("1","2")*/
+    Log.d("RESPOSTA", uiCurrentGames.toString())
+    LandingScreenContent(uiCurrentGames)
 }
 
 @Composable
-private fun LandingScreenContent(matches: List<Match>, modifier: Modifier = Modifier) {
+private fun LandingScreenContent(matches: MatchesListUiState, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        LazyColumn {
-            items(matches) { current ->
-                MatchDisplay(current)
-                Spacer(modifier = Modifier.size(8.dp))
+        if (matches.isError == false) {
+            LazyColumn {
+                items(matches.list) { current ->
+                    MatchDisplay(current)
+                    Spacer(modifier = Modifier.size(8.dp))
+                }
             }
         }
+        else if (matches.isLoading) {
+            Text("Loading...")
+        }
+        else if (matches.isError) {
+            Toast.makeText(context, matches.errorMessage, Toast.LENGTH_LONG).show()
+        }
+
     }
 }
 
