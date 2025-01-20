@@ -77,7 +77,7 @@ private fun EntryContent(navHostController: NavHostController, modifier: Modifie
                     modifier = modifier.padding(bottom = 124.dp)
                 )
                 Spacer(
-                    modifier = Modifier.size(160.dp),
+                    modifier = Modifier.size(140.dp),
 
                     )
 

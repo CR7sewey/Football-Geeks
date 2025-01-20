@@ -20,7 +20,8 @@ data class Match(
 
 data class Area(
     val id: Int,
-    val name: String
+    val name: String,
+    val flag: String
 )
 
 data class Competition(
