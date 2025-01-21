@@ -12,11 +12,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.footballgeeks.gameDetails.presentation.MatchDetailsViewModel
 import com.example.footballgeeks.landingPage.presentation.LandingPageViewModel
 import com.example.footballgeeks.ui.theme.FootballGeeksTheme
 
 class MainActivity : ComponentActivity() {
     private val landingPageViewModel by viewModels<LandingPageViewModel> { LandingPageViewModel.Factory }
+    private val matchDetailsViewModel by viewModels<MatchDetailsViewModel> { MatchDetailsViewModel.Factory }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
@@ -24,7 +27,7 @@ class MainActivity : ComponentActivity() {
             FootballGeeksTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     App(
-                        landingPageViewModel, modifier = Modifier.padding(innerPadding)
+                        landingPageViewModel, matchDetailsViewModel, modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
