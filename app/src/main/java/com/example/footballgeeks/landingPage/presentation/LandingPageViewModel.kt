@@ -16,10 +16,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import com.example.footballgeeks.landingPage.data.LandingPageRepository
 import com.example.footballgeeks.landingPage.presentation.ui.MatchesListUiState
 
 
-class LandingPageViewModel(private val landingPageService: LandingPageService): ViewModel() {
+class LandingPageViewModel(private val landingPageRepository: LandingPageRepository): ViewModel() {
 
     private val _uiCurrentGames = MutableStateFlow<MatchesListUiState>(MatchesListUiState())
     val uiCurrentGames: StateFlow<MatchesListUiState> = _uiCurrentGames
@@ -38,7 +39,7 @@ class LandingPageViewModel(private val landingPageService: LandingPageService): 
                 //val repository = application.repository
                 // Create a SavedStateHandle for this ViewModel from extras
                 //val savedStateHandle = extras.createSavedStateHandle()
-                return LandingPageViewModel(application.landingPageService) as T
+                return LandingPageViewModel(application.landingPageRepository) as T
             }
 
         }
@@ -50,13 +51,12 @@ class LandingPageViewModel(private val landingPageService: LandingPageService): 
 
     private fun fetchData() {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
                 var currentGames: List<Match> = emptyList()
-                var response = landingPageService.getMatches()
+                var response = landingPageRepository.getMatches()
                 _uiCurrentGames.value = MatchesListUiState(isLoading = true)
-                if (response.isSuccessful) {
-                    Log.d("AQUI 2", response.body()?.matches.toString())
-                    currentGames = response.body()?.matches ?: emptyList<Match>()
+                if (response.isSuccess) {
+                    Log.d("AQUI 2", response.getOrNull().toString())
+                    currentGames = response.getOrNull() ?: emptyList<Match>()
                     val conversion = currentGames.map { value -> Match(
                         area = value.area,
                         competition= value.competition,
@@ -70,21 +70,17 @@ class LandingPageViewModel(private val landingPageService: LandingPageService): 
                     _uiCurrentGames.value = MatchesListUiState(list = conversion, isLoading = false)
                 }
                 else {
-                    _uiCurrentGames.value = MatchesListUiState(isLoading = false, isError = true, errorMessage = "No internet connection..." )
-                }
+                    val ex = response.exceptionOrNull()
+                    Log.d("AQUI 2",ex?.message.toString())
+                    if (ex is NetworkErrorException) {
+                        _uiCurrentGames.value = MatchesListUiState(isLoading = false, isError = true, errorMessage = "No internet connection..." )
+                    }
+                    else {
+                        _uiCurrentGames.value = MatchesListUiState(isLoading = false, isError = true, errorMessage = "Something went wrong..." )
+                    }                }
             }
-            catch (ex: Exception) {
-                ex.printStackTrace()
-                Log.d("AQUI 2",ex.message.toString())
-                if (ex is NetworkErrorException) {
-                    _uiCurrentGames.value = MatchesListUiState(isLoading = false, isError = true, errorMessage = "No internet connection..." )
-                }
-                else {
-                    _uiCurrentGames.value = MatchesListUiState(isLoading = false, isError = true, errorMessage = "Something went wrong..." )
-                }
-             }
+
             }
 
     }
 
-}
