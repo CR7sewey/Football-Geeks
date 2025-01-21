@@ -12,6 +12,7 @@ import com.example.footballgeeks.common.remote.model.Match
 import com.example.footballgeeks.gameDetails.data.MatchDetailsRepository
 import com.example.footballgeeks.landingPage.presentation.ui.MatchesListUiState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -37,6 +38,14 @@ class MatchDetailsViewModel(private val matchDetailsRepository: MatchDetailsRepo
                 return MatchDetailsViewModel(application.matchDetailsRepository) as T
             }
 
+        }
+    }
+
+    fun cleanId() {
+        viewModelScope.launch {
+            delay(1000)
+            _uiCurrentGame.value = null
+            _uiErrorMessage.value = ""
         }
     }
 
