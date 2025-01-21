@@ -4,6 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,6 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
@@ -48,7 +50,7 @@ import retrofit2.Callback
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LandingPageScreen(landingPageViewModel: LandingPageViewModel, modifier: Modifier = Modifier) {
+fun LandingPageScreen(landingPageViewModel: LandingPageViewModel, navHostController: NavHostController, modifier: Modifier = Modifier) {
 
     val uiCurrentGames by landingPageViewModel.uiCurrentGames.collectAsState()
 
@@ -82,20 +84,19 @@ fun LandingPageScreen(landingPageViewModel: LandingPageViewModel, modifier: Modi
     })
     //val test = listOf<String>("1","2")*/
     Log.d("RESPOSTA", uiCurrentGames.toString())
-    LandingScreenContent(uiCurrentGames)
+    LandingScreenContent(uiCurrentGames, onClick =  { itemClicked: Match -> navHostController.navigate("match/${itemClicked.id}")})
 }
 
 @Composable
-private fun LandingScreenContent(matches: MatchesListUiState, modifier: Modifier = Modifier) {
+private fun LandingScreenContent(matches: MatchesListUiState, onClick: (itemClicked: Match) -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
-
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         if (matches.isError == false) {
             LazyColumn {
                 items(matches.list) { current ->
-                    MatchDisplay(current)
+                    MatchDisplay(current, onClick= onClick)
                     Spacer(modifier = Modifier.size(8.dp))
                 }
             }
@@ -111,12 +112,12 @@ private fun LandingScreenContent(matches: MatchesListUiState, modifier: Modifier
 }
 
 @Composable
-private fun MatchDisplay(match: Match, modifier: Modifier = Modifier) {
-
+private fun MatchDisplay(match: Match, onClick: (itemClicked: Match) -> Unit, modifier: Modifier = Modifier) {
+        Column(modifier = modifier.clickable {onClick.invoke(match)}) {
         EachRowMatchDisplay(teamName = match.homeTeam.name, teamSymbol = match.homeTeam.crest, teamHalfScore = match.score.halfTime.home, teamFinalScore = match.score.fullTime.home, countrySymbol = match.area.flag)
         Spacer(modifier= Modifier.size(1.dp).background(Color.LightGray))
         EachRowMatchDisplay(teamName = match.awayTeam.name, teamSymbol = match.awayTeam.crest, teamHalfScore = match.score.halfTime.away, teamFinalScore = match.score.fullTime.away, countrySymbol = match.area.flag)
-
+        }
 
 
 

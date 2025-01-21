@@ -2,9 +2,12 @@ package com.example.footballgeeks
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.footballgeeks.gameDetails.presentation.MatchPageScreen
 import com.example.footballgeeks.landingPage.presentation.LandingPageViewModel
 import com.example.footballgeeks.landingPage.presentation.ui.LandingPageScreen
 
@@ -17,7 +20,11 @@ fun App(landingPageViewModel: LandingPageViewModel, modifier: Modifier = Modifie
             EntryScreen(navController)
         }
         composable(route= "landingPage") {
-            LandingPageScreen(landingPageViewModel)
+            LandingPageScreen(landingPageViewModel, navController)
+        }
+        composable(route= "match" + "/{id}", arguments = listOf(navArgument("id"){type = NavType.StringType})) { backStateEntry ->
+
+            MatchPageScreen(requireNotNull(backStateEntry.arguments?.getString("id").toString()), navController)
         }
     }
     
