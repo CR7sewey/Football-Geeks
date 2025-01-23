@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -84,11 +85,11 @@ fun LandingPageScreen(landingPageViewModel: LandingPageViewModel, navHostControl
     })
     //val test = listOf<String>("1","2")*/
     Log.d("RESPOSTA", uiCurrentGames.toString())
-    LandingScreenContent(uiCurrentGames, onClick =  { itemClicked: Match -> navHostController.navigate("match/${itemClicked.id}")})
+    LandingScreenContent(uiCurrentGames, onClick =  { itemClicked: Match -> navHostController.navigate("match/${itemClicked.id}")}, navHostController)
 }
 
 @Composable
-private fun LandingScreenContent(matches: MatchesListUiState, onClick: (itemClicked: Match) -> Unit, modifier: Modifier = Modifier) {
+private fun LandingScreenContent(matches: MatchesListUiState, onClick: (itemClicked: Match) -> Unit,navHostController: NavHostController, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -103,6 +104,7 @@ private fun LandingScreenContent(matches: MatchesListUiState, onClick: (itemClic
         }
         else if (matches.isError == false) {
             Text("To be done later ...")
+            Button(onClick = {navHostController.navigate("teams")}) { }
         }
         else if (matches.isLoading) {
             Text("Loading...")
