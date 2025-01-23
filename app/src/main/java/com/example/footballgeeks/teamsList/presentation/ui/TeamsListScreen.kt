@@ -90,6 +90,39 @@ fun TeamsListContent(teams: TeamsListUIState, teamsListViewModel: TeamsListViewM
                             contentDescription = "Back Button"
                         )
                     }
+                    Row(modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = rememberAsyncImagePainter("https://crests.football-data.org/3.png"),
+                            contentDescription = null, // Descrição para acessibilidade
+                            modifier = Modifier
+                                .size(30.dp) // Tamanho da imagem
+                                ,
+                            contentScale = ContentScale.Crop
+                        )
+                        Spacer(modifier = modifier.width(4.dp))
+                        Image(
+                            painter = rememberAsyncImagePainter("https://crests.football-data.org/4.png"),
+                            contentDescription = null, // Descrição para acessibilidade
+                            modifier = Modifier
+                                .size(30.dp) // Tamanho da imagem
+                                ,
+                            contentScale = ContentScale.Crop
+                        )
+                        Spacer(modifier = modifier.width(4.dp))
+
+                        Image(
+                            painter = rememberAsyncImagePainter("https://crests.football-data.org/5.png"),
+                            contentDescription = null, // Descrição para acessibilidade
+                            modifier = Modifier
+                                .size(30.dp) // Tamanho da imagem
+                                ,
+                            contentScale = ContentScale.Crop
+                        )
+
+                    }
 
                     /*Text(
                     modifier = Modifier.padding(start = 4.dp),
