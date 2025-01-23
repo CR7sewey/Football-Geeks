@@ -93,13 +93,16 @@ private fun LandingScreenContent(matches: MatchesListUiState, onClick: (itemClic
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        if (matches.isError == false) {
+        if (matches.isError == false && !matches.list.isEmpty()) {
             LazyColumn {
                 items(matches.list) { current ->
                     MatchDisplay(current, onClick= onClick)
                     Spacer(modifier = Modifier.size(8.dp))
                 }
             }
+        }
+        else if (matches.isError == false) {
+            Text("To be done later ...")
         }
         else if (matches.isLoading) {
             Text("Loading...")
