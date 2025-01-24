@@ -14,6 +14,8 @@ import com.example.footballgeeks.gameDetails.presentation.ui.MatchPageScreen
 import com.example.footballgeeks.landingPage.presentation.LandingPageViewModel
 import com.example.footballgeeks.landingPage.presentation.ui.LandingPageScreen
 import androidx.compose.runtime.getValue
+import com.example.footballgeeks.competitionsList.presentation.CompetitionsListViewModel
+import com.example.footballgeeks.competitionsList.presentation.ui.CompetitionsScreen
 import com.example.footballgeeks.teamDetails.presentation.TeamDetailsViewModel
 import com.example.footballgeeks.teamDetails.presentation.ui.TeamDetailsScreen
 import com.example.footballgeeks.teamsList.presentation.TeamsListViewModel
@@ -24,6 +26,7 @@ fun App(landingPageViewModel: LandingPageViewModel,
         matchDetailsViewModel: MatchDetailsViewModel,
         teamsListViewModel: TeamsListViewModel,
         teamDetailsViewModel: TeamDetailsViewModel,
+        competitionsListViewModel: CompetitionsListViewModel,
         modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -54,6 +57,9 @@ fun App(landingPageViewModel: LandingPageViewModel,
         composable(route= "teams" + "/{id}", arguments = listOf(navArgument("id"){type = NavType.StringType})) { backStateEntry ->
             Test(navController)
             TeamDetailsScreen(teamDetailsViewModel, requireNotNull(backStateEntry.arguments?.getString("id").toString()))
+        }
+        composable(route= "competitions") {
+            CompetitionsScreen(competitionsListViewModel, navController)
         }
     }
     
