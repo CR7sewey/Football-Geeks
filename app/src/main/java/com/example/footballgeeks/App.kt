@@ -14,11 +14,17 @@ import com.example.footballgeeks.gameDetails.presentation.ui.MatchPageScreen
 import com.example.footballgeeks.landingPage.presentation.LandingPageViewModel
 import com.example.footballgeeks.landingPage.presentation.ui.LandingPageScreen
 import androidx.compose.runtime.getValue
+import com.example.footballgeeks.teamDetails.presentation.TeamDetailsViewModel
+import com.example.footballgeeks.teamDetails.presentation.ui.TeamDetailsScreen
 import com.example.footballgeeks.teamsList.presentation.TeamsListViewModel
 import com.example.footballgeeks.teamsList.presentation.ui.TeamsListScreen
 
 @Composable
-fun App(landingPageViewModel: LandingPageViewModel, matchDetailsViewModel: MatchDetailsViewModel, teamsListViewModel: TeamsListViewModel, modifier: Modifier = Modifier) {
+fun App(landingPageViewModel: LandingPageViewModel,
+        matchDetailsViewModel: MatchDetailsViewModel,
+        teamsListViewModel: TeamsListViewModel,
+        teamDetailsViewModel: TeamDetailsViewModel,
+        modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     NavHost(navController = navController, startDestination = "entry") {
@@ -34,18 +40,20 @@ fun App(landingPageViewModel: LandingPageViewModel, matchDetailsViewModel: Match
         }
         composable(route= "landingPage") {
             Column {
-                Test()
+                Test(navController)
                 LandingPageScreen(landingPageViewModel, navController)
             }
         }
         composable(route= "match" + "/{id}", arguments = listOf(navArgument("id"){type = NavType.StringType})) { backStateEntry ->
-            Test()
+            Test(navController)
             MatchPageScreen(matchDetailsViewModel, requireNotNull(backStateEntry.arguments?.getString("id").toString()), navController)
         }
         composable(route= "teams") {
-
             TeamsListScreen(teamsListViewModel, navController)
-
+        }
+        composable(route= "teams" + "/{id}", arguments = listOf(navArgument("id"){type = NavType.StringType})) { backStateEntry ->
+            Test(navController)
+            TeamDetailsScreen(teamDetailsViewModel, requireNotNull(backStateEntry.arguments?.getString("id").toString()))
         }
     }
     
