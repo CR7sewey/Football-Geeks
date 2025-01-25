@@ -48,8 +48,9 @@ fun App(landingPageViewModel: LandingPageViewModel,
             }
         }
         composable(route= "match" + "/{id}", arguments = listOf(navArgument("id"){type = NavType.StringType})) { backStateEntry ->
+            Column {
             Test(navController)
-            MatchPageScreen(matchDetailsViewModel, requireNotNull(backStateEntry.arguments?.getString("id").toString()), navController)
+            MatchPageScreen(matchDetailsViewModel, requireNotNull(backStateEntry.arguments?.getString("id").toString()), navController)}
         }
         composable(route= "teams") {
             TeamsListScreen(teamsListViewModel, navController)

@@ -2,6 +2,7 @@ package com.example.footballgeeks.competitionsList.presentation.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.example.footballgeeks.common.remote.model.Competition
 import com.example.footballgeeks.common.remote.model.CompetitionDetails
 import com.example.footballgeeks.common.remote.model.TeamDetails
 import com.example.footballgeeks.competitionsList.presentation.CompetitionsListViewModel
@@ -53,11 +55,11 @@ import com.example.footballgeeks.competitionsList.presentation.CompetitionsListV
 fun CompetitionsScreen(competitionsListViewModel: CompetitionsListViewModel, navHostController: NavHostController ,modifier: Modifier = Modifier) {
     val uiCompetitions by competitionsListViewModel.uiCompetitions.collectAsState()
 
-    CompetitionsListContent(uiCompetitions, competitionsListViewModel, navHostController)
+    CompetitionsListContent(uiCompetitions, competitionsListViewModel, navHostController, onClick = {itemClicked: CompetitionDetails -> navHostController.navigate(route = "competition/${itemClicked.code}")})
 }
 
 @Composable
-fun CompetitionsListContent(competitions: CompetitionsListUIState, competitionsListViewModel: CompetitionsListViewModel, navHostController: NavHostController, modifier: Modifier = Modifier) {
+fun CompetitionsListContent(competitions: CompetitionsListUIState, competitionsListViewModel: CompetitionsListViewModel, navHostController: NavHostController, onClick: (itemClicked: CompetitionDetails) -> Unit, modifier: Modifier = Modifier) {
     var query by remember { mutableStateOf("") }
     var competitionsShown: CompetitionDetails? by remember { mutableStateOf(null) }
     Column(modifier = Modifier
@@ -102,14 +104,14 @@ fun CompetitionsListContent(competitions: CompetitionsListUIState, competitionsL
         LazyColumn(modifier = modifier.padding(8.dp)) {
             if (query.isEmpty()) {
                 items(competitions.list) { current ->
-                    EachRowGameDisplay(current)
+                    EachRowGameDisplay(current, onClick)
                     Spacer(modifier = Modifier.size(8.dp))
                 }
             }
 
         }
         if (!query.trim().isEmpty()) {
-            EachRowGameDisplay(competitionsShown)
+            EachRowGameDisplay(competitionsShown, onClick)
         }
 
     }
@@ -117,12 +119,14 @@ fun CompetitionsListContent(competitions: CompetitionsListUIState, competitionsL
 }
 
 @Composable
-fun EachRowGameDisplay(competition: CompetitionDetails?) {
+fun EachRowGameDisplay(competition: CompetitionDetails?, onClick: (itemClicked: CompetitionDetails) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .background(Color.LightGray).padding(4.dp),
+            .background(Color.LightGray).padding(4.dp).clickable { if(competition != null) {
+                onClick.invoke(competition)
+            }},
         verticalAlignment = Alignment.CenterVertically
     ) {
 
