@@ -2,6 +2,7 @@ package com.example.footballgeeks.competitionDetails.data
 
 import android.accounts.NetworkErrorException
 import com.example.footballgeeks.common.remote.model.CompetitionsDetailsDTO
+import com.example.footballgeeks.common.remote.model.CompetitionsDetailsStandings
 import com.example.footballgeeks.competitionDetails.data.remote.CompetitionDetailsRemoteDataSource
 
 class CompetitionDetailsRepository(private val competitionDetailsRemoteDataSource: CompetitionDetailsRemoteDataSource) {
@@ -19,5 +20,20 @@ class CompetitionDetailsRepository(private val competitionDetailsRemoteDataSourc
             ex.printStackTrace()
             Result.failure(ex)
         } as Result<CompetitionsDetailsDTO>
+    }
+
+    suspend fun getCompetitionStandings(id: String): Result<CompetitionsDetailsStandings> {
+        return try {
+            val result = competitionDetailsRemoteDataSource.getCompetitionStandings(id)
+            if (result.isSuccess) {
+                val match = result.getOrNull()
+                Result.success(match)
+            } else {
+                Result.failure(NetworkErrorException(result.exceptionOrNull()?.message.toString()))
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            Result.failure(ex)
+        } as Result<CompetitionsDetailsStandings>
     }
 }

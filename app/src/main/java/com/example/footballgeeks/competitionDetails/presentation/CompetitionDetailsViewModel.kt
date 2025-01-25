@@ -10,6 +10,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.footballgeeks.FootballGeeksApp
 import com.example.footballgeeks.common.remote.model.CompetitionDetails
 import com.example.footballgeeks.common.remote.model.CompetitionsDetailsDTO
+import com.example.footballgeeks.common.remote.model.CompetitionsDetailsStandings
 import com.example.footballgeeks.common.remote.model.Match
 import com.example.footballgeeks.competitionDetails.data.CompetitionDetailsRepository
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,9 @@ class CompetitionDetailsViewModel(private val competitionDetailsRepository: Comp
 
     private val _uiCompetition = MutableStateFlow<CompetitionsDetailsDTO?>(null)
     val uiCompetition: StateFlow<CompetitionsDetailsDTO?> = _uiCompetition
+
+    private val _uiCompetitionStandings = MutableStateFlow<CompetitionsDetailsStandings?>(null)
+    val uiCompetitionStandings: StateFlow<CompetitionsDetailsStandings?> = _uiCompetitionStandings
 
     private val _uiErrorMessage = MutableStateFlow<String>("")
     val uiErrorMessage: StateFlow<String> = _uiErrorMessage
@@ -49,7 +53,7 @@ class CompetitionDetailsViewModel(private val competitionDetailsRepository: Comp
         }
     }
 
-    fun fetchData(code: String) {
+    fun fetchDataCompetition(code: String) {
         viewModelScope.launch(Dispatchers.IO) {
             var competition: CompetitionsDetailsDTO? = null
             var response = competitionDetailsRepository.getCompetitionDetails(code)
@@ -72,7 +76,35 @@ class CompetitionDetailsViewModel(private val competitionDetailsRepository: Comp
                     _uiErrorMessage.value = "Something went wrong..."
 
                 }
-            }                }
+            }
+        }
+    }
+
+    fun fetchDataCompetitionStandings(id: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            var competition: CompetitionsDetailsStandings? = null
+            var response = competitionDetailsRepository.getCompetitionStandings(id)
+            if (response.isSuccess) {
+                Log.d("AQUI 2", response.getOrNull().toString())
+                competition = response.getOrNull()
+                var conversion: CompetitionsDetailsStandings? = null
+                /*if (competition != null && competition.seasons.winner == null) {
+                    competition.seasons.winner = ""
+                }*/
+                _uiCompetitionStandings.value = competition
+            }
+            else {
+                val ex = response.exceptionOrNull()
+                Log.d("AQUI 2",ex?.message.toString())
+                if (ex is NetworkErrorException) {
+                    _uiErrorMessage.value = "No internet connection..."
+                }
+                else {
+                    _uiErrorMessage.value = "Something went wrong..."
+
+                }
+            }
+        }
     }
 
 }

@@ -35,7 +35,9 @@ import com.example.footballgeeks.common.remote.model.CompetitionsDetailsDTO
 fun CompetitionDetailsPageScreen(competitionDetailsViewModel: CompetitionDetailsViewModel, code:String, navController: NavHostController, modifier: Modifier = Modifier) {
 
     val competition by competitionDetailsViewModel.uiCompetition.collectAsState()
-    competitionDetailsViewModel.fetchData(code)
+    competitionDetailsViewModel.fetchDataCompetition(code)
+    val competitionStandings by competitionDetailsViewModel.uiCompetitionStandings.collectAsState()
+    competitionDetailsViewModel.fetchDataCompetitionStandings(code)
     val errorMessage by competitionDetailsViewModel.uiErrorMessage.collectAsState()
 
     competition.let {
