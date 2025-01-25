@@ -13,7 +13,7 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun Test(navHostController: NavHostController, modifier: Modifier = Modifier) {
-    val navbar = listOf("teams")
+    val navbar = listOf("teams","competitions")
     LazyRow {
         items(navbar) { current ->
             Button(onClick = {navHostController.navigate(route = current)}) {
