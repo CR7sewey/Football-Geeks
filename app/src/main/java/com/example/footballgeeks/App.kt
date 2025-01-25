@@ -14,6 +14,8 @@ import com.example.footballgeeks.gameDetails.presentation.ui.MatchPageScreen
 import com.example.footballgeeks.landingPage.presentation.LandingPageViewModel
 import com.example.footballgeeks.landingPage.presentation.ui.LandingPageScreen
 import androidx.compose.runtime.getValue
+import com.example.footballgeeks.competitionDetails.presentation.CompetitionDetailsViewModel
+import com.example.footballgeeks.competitionDetails.presentation.ui.CompetitionDetailsPageScreen
 import com.example.footballgeeks.competitionsList.presentation.CompetitionsListViewModel
 import com.example.footballgeeks.competitionsList.presentation.ui.CompetitionsScreen
 import com.example.footballgeeks.teamDetails.presentation.TeamDetailsViewModel
@@ -27,6 +29,7 @@ fun App(landingPageViewModel: LandingPageViewModel,
         teamsListViewModel: TeamsListViewModel,
         teamDetailsViewModel: TeamDetailsViewModel,
         competitionsListViewModel: CompetitionsListViewModel,
+        competitionDetailsViewModel: CompetitionDetailsViewModel,
         modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -61,6 +64,9 @@ fun App(landingPageViewModel: LandingPageViewModel,
         }
         composable(route= "competitions") {
             CompetitionsScreen(competitionsListViewModel, navController)
+        }
+        composable(route= "competitions" + "/{code}", arguments = listOf(navArgument("code"){type = NavType.StringType})) { backStateEntry ->
+            CompetitionDetailsPageScreen(competitionDetailsViewModel, requireNotNull(backStateEntry.arguments?.getString("code").toString()))
         }
     }
     

@@ -1,6 +1,9 @@
 package com.example.footballgeeks
 
 import android.app.Application
+import com.example.footballgeeks.competitionDetails.data.CompetitionDetailsRepository
+import com.example.footballgeeks.competitionDetails.data.remote.CompetitionDetailsRemoteDataSource
+import com.example.footballgeeks.competitionDetails.data.remote.CompetitionDetailsService
 import com.example.footballgeeks.competitionsList.data.CompetitionsListRepository
 import com.example.footballgeeks.competitionsList.data.remote.CompetitionsListRemoteDataSource
 import com.example.footballgeeks.competitionsList.data.remote.CompetitionsListService
@@ -80,4 +83,14 @@ class FootballGeeksApp: Application() {
         CompetitionsListRepository(competitionsListRemoteDataSource)
     }
 
+    // --
+    private val competitionDetailsService: CompetitionDetailsService by lazy {
+        RetroFitClient.retrofit.create(CompetitionDetailsService::class.java)
+    }
+    private val competitionDetailsRemoteDataSource: CompetitionDetailsRemoteDataSource by lazy {
+        CompetitionDetailsRemoteDataSource(competitionDetailsService)
+    }
+    val competitionDetailsRepository: CompetitionDetailsRepository by lazy {
+        CompetitionDetailsRepository(competitionDetailsRemoteDataSource)
+    }
 }

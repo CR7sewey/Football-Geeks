@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.footballgeeks.competitionDetails.presentation.CompetitionDetailsViewModel
 import com.example.footballgeeks.competitionsList.presentation.CompetitionsListViewModel
 import com.example.footballgeeks.gameDetails.presentation.MatchDetailsViewModel
 import com.example.footballgeeks.landingPage.presentation.LandingPageViewModel
@@ -25,6 +26,7 @@ class MainActivity : ComponentActivity() {
     private val teamsListViewModel by viewModels<TeamsListViewModel> { TeamsListViewModel.Factory }
     private val teamDetailsViewModel by viewModels<TeamDetailsViewModel> { TeamDetailsViewModel.Factory }
     private val competitionsListViewModel by viewModels<CompetitionsListViewModel> { CompetitionsListViewModel.Factory }
+    private val competitionDetailsViewModel by viewModels<CompetitionDetailsViewModel> { CompetitionDetailsViewModel.Factory }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +36,13 @@ class MainActivity : ComponentActivity() {
             FootballGeeksTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     App(
-                        landingPageViewModel, matchDetailsViewModel, teamsListViewModel, teamDetailsViewModel, competitionsListViewModel, modifier = Modifier.padding(innerPadding)
+                        landingPageViewModel,
+                        matchDetailsViewModel,
+                        teamsListViewModel,
+                        teamDetailsViewModel,
+                        competitionsListViewModel,
+                        competitionDetailsViewModel,
+                        modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
