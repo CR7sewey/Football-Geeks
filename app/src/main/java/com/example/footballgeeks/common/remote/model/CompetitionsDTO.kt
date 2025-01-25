@@ -19,3 +19,24 @@ data class CurrentSeason(
     val startDate: String,
     val endDate: String,
 )
+
+// --
+
+data class CompetitionsDetailsDTO(
+    val area: Area,
+    val id: Int,
+    val name: String,
+    val code: String,
+    val type: String,
+    val emblem: String,
+    val currentSeason: CurrentSeason,
+    val seasons: List<Season>
+)
+
+data class Season(
+    val id: Int,
+    val startDate: String,
+    val endDate: String,
+    val currentMatchday: Int,
+    val winner: TeamDetails
+)

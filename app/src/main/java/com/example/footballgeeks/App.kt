@@ -66,7 +66,7 @@ fun App(landingPageViewModel: LandingPageViewModel,
             CompetitionsScreen(competitionsListViewModel, navController)
         }
         composable(route= "competitions" + "/{code}", arguments = listOf(navArgument("code"){type = NavType.StringType})) { backStateEntry ->
-            CompetitionDetailsPageScreen(competitionDetailsViewModel, requireNotNull(backStateEntry.arguments?.getString("code").toString()))
+            CompetitionDetailsPageScreen(competitionDetailsViewModel, requireNotNull(backStateEntry.arguments?.getString("code").toString()), navController)
         }
     }
     
