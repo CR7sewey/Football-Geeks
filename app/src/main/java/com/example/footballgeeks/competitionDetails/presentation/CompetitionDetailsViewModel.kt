@@ -45,10 +45,19 @@ class CompetitionDetailsViewModel(private val competitionDetailsRepository: Comp
         }
     }
 
-    fun cleanCode() {
+    fun cleanCodeId() {
         viewModelScope.launch {
             delay(1000)
             _uiCompetition.value = null
+            _uiCompetitionStandings.value = null
+            _uiErrorMessage.value = ""
+        }
+    }
+
+    fun cleanId() {
+        viewModelScope.launch {
+            delay(1000)
+            _uiCompetitionStandings.value = null
             _uiErrorMessage.value = ""
         }
     }
