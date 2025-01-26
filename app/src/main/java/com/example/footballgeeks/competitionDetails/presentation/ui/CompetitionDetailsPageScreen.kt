@@ -40,7 +40,9 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.footballgeeks.common.remote.model.CompetitionDetails
 import com.example.footballgeeks.common.remote.model.CompetitionsDetailsDTO
 import com.example.footballgeeks.common.remote.model.CompetitionsDetailsStandings
+import com.example.footballgeeks.common.remote.model.Scorers
 import com.example.footballgeeks.common.remote.model.Standings
+import com.example.footballgeeks.common.remote.model.StatsPlayerDTO
 import com.example.footballgeeks.common.remote.model.Table
 import com.example.footballgeeks.ui.theme.blueLight
 
@@ -56,12 +58,12 @@ fun CompetitionDetailsPageScreen(competitionDetailsViewModel: CompetitionDetails
     val errorMessage by competitionDetailsViewModel.uiErrorMessage.collectAsState()
 
     competition.let {
-        CompetitionDetailsContent(competition, competitionStandings, navController, competitionDetailsViewModel)
+        CompetitionDetailsContent(competition, competitionStandings, competitionScorers, navController, competitionDetailsViewModel)
     }
 }
 
 @Composable
-fun CompetitionDetailsContent(competition: CompetitionsDetailsDTO?, competitionStandings: CompetitionsDetailsStandings?, navController: NavHostController,competitionDetailsViewModel: CompetitionDetailsViewModel, modifier: Modifier = Modifier) {
+fun CompetitionDetailsContent(competition: CompetitionsDetailsDTO?, competitionStandings: CompetitionsDetailsStandings?,competitionScorers: StatsPlayerDTO?, navController: NavHostController,competitionDetailsViewModel: CompetitionDetailsViewModel, modifier: Modifier = Modifier) {
     var selectedTabIndex by remember{ mutableIntStateOf(0) }
 
     Column {
@@ -131,6 +133,19 @@ fun CompetitionDetailsContent(competition: CompetitionsDetailsDTO?, competitionS
                         Spacer(modifier = modifier.size(2.dp))
                 }
              }
+
+        }
+        if (selectedTabIndex == 1) {
+            val label: List<String> = listOf("Player", "M", "G","A")
+            Column(modifier = modifier.padding(8.dp)) {             LabelStatsDisplay(label)
+            }
+            LazyColumn(modifier = modifier.padding(8.dp)) {
+
+                items(competitionScorers?.scorers ?: emptyList<Scorers>()) { current ->
+                    ScorersDisplay(current,navController)
+                    Spacer(modifier = modifier.size(2.dp))
+                }
+            }
 
         }
     }
@@ -218,6 +233,73 @@ fun StandingsDisplay(standings: Table, navHostController: NavHostController, mod
 }
 
 @Composable
+fun ScorersDisplay(scorers: Scorers, navHostController: NavHostController, modifier: Modifier = Modifier) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .background(
+
+                    blueLight
+
+                 )
+            .padding(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+
+        Spacer(modifier = Modifier.width(10.dp))
+
+        Text(
+            text = "${1}. ",
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 16.sp
+        )
+
+        Spacer(modifier = modifier.size(4.dp))
+        // Checkbox e nome da equipa
+        // Imagem da equipa
+        Image(
+            painter = rememberAsyncImagePainter(scorers.team.crest),
+            contentDescription = null, // Descrição para acessibilidade
+            modifier = Modifier
+                .size(26.dp) // Tamanho da imagem
+            ,
+            contentScale = ContentScale.Crop
+        )
+        Spacer(modifier = modifier.size(4.dp))
+        Text(
+            text = scorers.player.name,
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 16.sp
+        )
+
+        Spacer(modifier = Modifier.weight(6f))
+        Text(
+            text = "${scorers.playedMatches}",
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 16.sp
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = "${scorers.goals}",
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 16.sp,
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = "${scorers.assists}",
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 16.sp,
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.width(16.dp))
+
+    }
+
+}
+
+@Composable
 fun LabelStandingsDisplay(label: List<String>, modifier: Modifier = Modifier) {
     Row(
         modifier = Modifier
@@ -284,6 +366,67 @@ fun LabelStandingsDisplay(label: List<String>, modifier: Modifier = Modifier) {
             fontSize = 16.sp,
             color = Color.White
         )
+        Spacer(modifier = Modifier.width(16.dp))
+
+    }
+
+}
+
+@Composable
+fun LabelStatsDisplay(label: List<String>, modifier: Modifier = Modifier) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp).background(Color.DarkGray)
+            .padding(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+
+        Spacer(modifier = Modifier.width(10.dp))
+
+        Text(
+            text = "Pl ",
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 16.sp,
+            color = Color.White
+        )
+
+        Spacer(modifier = modifier.size(2.dp))
+
+        // Checkbox e nome da equipa
+        // Imagem da equipa
+
+        Text(
+            text = label[0],
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 16.sp,
+            color = Color.White
+        )
+
+        Spacer(modifier = Modifier.weight(6f))
+        Text(
+            text = label[1],
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 16.sp,
+            color = Color.White
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = label[2],
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 16.sp,
+            color = Color.White
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = label[3],
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 16.sp,
+            color = Color.White
+        )
+        Spacer(modifier = Modifier.weight(1f))
+
         Spacer(modifier = Modifier.width(16.dp))
 
     }

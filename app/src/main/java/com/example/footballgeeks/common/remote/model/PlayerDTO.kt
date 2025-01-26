@@ -7,7 +7,7 @@ data class StatsPlayerDTO(
 )
 
 data class Scorers(
-    val player: List<PlayerDTO>,
+    val player: PlayerDTO,
     val team: TeamDetails,
     val playedMatches: Int,
     val goals: Int,
