@@ -55,7 +55,7 @@ import com.example.footballgeeks.competitionsList.presentation.CompetitionsListV
 fun CompetitionsScreen(competitionsListViewModel: CompetitionsListViewModel, navHostController: NavHostController ,modifier: Modifier = Modifier) {
     val uiCompetitions by competitionsListViewModel.uiCompetitions.collectAsState()
 
-    CompetitionsListContent(uiCompetitions, competitionsListViewModel, navHostController, onClick = {itemClicked: CompetitionDetails -> navHostController.navigate(route = "competition/${itemClicked.code}")})
+    CompetitionsListContent(uiCompetitions, competitionsListViewModel, navHostController, onClick = {itemClicked: CompetitionDetails -> navHostController.navigate(route = "competitions/${itemClicked.code}")})
 }
 
 @Composable
