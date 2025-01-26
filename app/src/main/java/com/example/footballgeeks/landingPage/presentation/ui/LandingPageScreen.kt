@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -47,6 +48,8 @@ import retrofit2.Call
 import retrofit2.Response
 import coil.size.Size
 import com.example.footballgeeks.landingPage.presentation.LandingPageViewModel
+import com.example.footballgeeks.ui.theme.blueLight
+import com.example.footballgeeks.ui.theme.gamesColor
 import retrofit2.Callback
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -134,7 +137,7 @@ fun EachRowMatchDisplay(teamName: String, teamSymbol: String, teamHalfScore: Int
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .background(Color.LightGray),
+            .background(gamesColor),
         verticalAlignment = Alignment.CenterVertically
     ) {
         val svgPainter = rememberAsyncImagePainter(
@@ -179,7 +182,7 @@ fun EachRowMatchDisplay(teamName: String, teamSymbol: String, teamHalfScore: Int
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = teamHalfScore.toString(), fontSize = 16.sp, color = Color.Gray)
+            Text(text = teamHalfScore.toString(), fontSize = 16.sp, color = Color.DarkGray)
             Text(text = teamFinalScore.toString(), fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
         }
 
