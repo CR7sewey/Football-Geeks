@@ -51,6 +51,8 @@ fun CompetitionDetailsPageScreen(competitionDetailsViewModel: CompetitionDetails
     competitionDetailsViewModel.fetchDataCompetition(code)
     val competitionStandings by competitionDetailsViewModel.uiCompetitionStandings.collectAsState()
     competitionDetailsViewModel.fetchDataCompetitionStandings(code)
+    val competitionScorers by competitionDetailsViewModel.uiCompetitionScorers.collectAsState()
+    competitionDetailsViewModel.fetchDataCompetitionScorers(code)
     val errorMessage by competitionDetailsViewModel.uiErrorMessage.collectAsState()
 
     competition.let {
@@ -291,7 +293,7 @@ fun LabelStandingsDisplay(label: List<String>, modifier: Modifier = Modifier) {
 
 @Composable
 fun CompetitionDetailsContentDisplayed(selectedTabIndex: Int, onTabChange: (it: Int) -> Unit, modifier: Modifier = Modifier) {
-    val tabs = listOf("Current Season", "Previous Seasons")
+    val tabs = listOf("Table", "Stats", "Previous Seasons")
 
     Row(
         modifier = Modifier
