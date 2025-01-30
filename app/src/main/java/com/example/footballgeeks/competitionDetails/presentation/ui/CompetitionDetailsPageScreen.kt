@@ -1,5 +1,6 @@
 package com.example.footballgeeks.competitionDetails.presentation.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
@@ -27,9 +30,11 @@ import androidx.compose.ui.Modifier
 import com.example.footballgeeks.competitionDetails.presentation.CompetitionDetailsViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -45,25 +50,41 @@ import com.example.footballgeeks.common.remote.model.Standings
 import com.example.footballgeeks.common.remote.model.StatsPlayerDTO
 import com.example.footballgeeks.common.remote.model.Table
 import com.example.footballgeeks.ui.theme.blueLight
+import kotlinx.coroutines.flow.MutableStateFlow
+import java.time.Year
 
 @Composable
 fun CompetitionDetailsPageScreen(competitionDetailsViewModel: CompetitionDetailsViewModel, code:String, navController: NavHostController, modifier: Modifier = Modifier) {
-
     val competition by competitionDetailsViewModel.uiCompetition.collectAsState()
     competitionDetailsViewModel.fetchDataCompetition(code)
     val competitionStandings by competitionDetailsViewModel.uiCompetitionStandings.collectAsState()
     competitionDetailsViewModel.fetchDataCompetitionStandings(code)
     val competitionScorers by competitionDetailsViewModel.uiCompetitionScorers.collectAsState()
-    competitionDetailsViewModel.fetchDataCompetitionScorers(code)
     val errorMessage by competitionDetailsViewModel.uiErrorMessage.collectAsState()
+    val seasonsDates = datesGeneration(competition)
+    val seasonUsed by competitionDetailsViewModel.seasonUsed.collectAsState()
+
+    competitionDetailsViewModel.fetchDataCompetitionScorers(code, seasonUsed)
+
+
 
     competition.let {
-        CompetitionDetailsContent(competition, competitionStandings, competitionScorers, navController, competitionDetailsViewModel)
+        CompetitionDetailsContent(competition, competitionStandings, competitionScorers, navController, competitionDetailsViewModel, seasonsDates)
     }
 }
 
+fun datesGeneration(competition: CompetitionsDetailsDTO?): MutableList<String?> {
+    val seasonsLength: Int = competition?.seasons?.size ?: 0
+    var seasonsDates: MutableList<String?> = mutableListOf()
+    competition?.seasons?.forEach { it ->
+        val dates = "${it.startDate.split("-")[0]}/${it.endDate.split("-")[0]}"
+        seasonsDates.add(dates)
+    }
+    return seasonsDates
+}
+
 @Composable
-fun CompetitionDetailsContent(competition: CompetitionsDetailsDTO?, competitionStandings: CompetitionsDetailsStandings?,competitionScorers: StatsPlayerDTO?, navController: NavHostController,competitionDetailsViewModel: CompetitionDetailsViewModel, modifier: Modifier = Modifier) {
+fun CompetitionDetailsContent(competition: CompetitionsDetailsDTO?, competitionStandings: CompetitionsDetailsStandings?, competitionScorers: StatsPlayerDTO?, navController: NavHostController, competitionDetailsViewModel: CompetitionDetailsViewModel, seasonsDates: MutableList<String?>, modifier: Modifier = Modifier) {
     var selectedTabIndex by remember{ mutableIntStateOf(0) }
 
     Column {
@@ -148,6 +169,95 @@ fun CompetitionDetailsContent(competition: CompetitionsDetailsDTO?, competitionS
             }
 
         }
+        
+        if (selectedTabIndex == 2) {
+
+                PreviousSeasons(competition, competitionDetailsViewModel, competitionScorers, seasonsDates)
+
+        }
+    }
+}
+
+@Composable
+fun PreviousSeasons(competition: CompetitionsDetailsDTO?, competitionDetailsViewModel: CompetitionDetailsViewModel, competitionScorers: StatsPlayerDTO? ,seasonsDates: MutableList<String?>, modifier: Modifier = Modifier) {
+    var selectedDate by remember{ mutableIntStateOf(0) }
+    var year by remember { mutableStateOf("") }
+    if (competition != null) {
+        val competitionScorers by competitionDetailsViewModel.uiCompetitionScorers.collectAsState()
+        competitionDetailsViewModel.fetchDataCompetitionScorers(competition.code, year
+        )
+        Log.d("TEST 1", competitionScorers?.scorers.toString())
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(blueLight)
+                    .padding(horizontal = 24.dp, vertical = 8.dp)
+            ) {
+                Row {
+                    Text(text = "<  ", modifier = modifier.clickable {
+                        if (selectedDate == competition.seasons.size.minus(1)) {
+                            // Nothing
+                        } else {
+                            selectedDate = selectedDate + 1
+                            year = seasonsDates[selectedDate]?.split("/")[0].toString()
+                            Log.d("TEST 1", seasonsDates[selectedDate]?.split("/")[0].toString())
+                            Log.d("TEST 1", competitionScorers?.scorers.toString())
+                            competitionDetailsViewModel.setSeason(year)
+
+                        }
+                    }, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                    Text(text = "${seasonsDates[selectedDate]}", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                    Text(text = "  >", modifier = modifier.clickable {
+                        if (selectedDate == 0) {
+                            // Nothing
+                        } else {
+                            selectedDate = selectedDate - 1
+                            Log.d("TEST 1", seasonsDates[selectedDate]?.split("/")[0].toString())
+                            year = seasonsDates[selectedDate]?.split("/")[0].toString()
+                            Log.d("TEST 1", competitionScorers?.scorers.toString())
+                            competitionDetailsViewModel.setSeason(year)
+                        }
+                    }, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                }
+            }
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Text("Winner", fontSize = 26.sp, fontWeight = FontWeight.SemiBold)
+            Spacer(modifier = Modifier.height(22.dp))
+            Image(
+                painter = rememberAsyncImagePainter(competition.seasons[selectedDate].winner?.crest),
+                contentDescription = null, // Descrição para acessibilidade
+                modifier = Modifier
+                    .size(120.dp) // Tamanho da imagem
+                ,
+                contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(competition.seasons[selectedDate]?.winner?.name ?: "No winner", fontSize = 24.sp)
+
+
+
+            // Scorers
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Text("Top 3 Scorers", fontSize = 26.sp, fontWeight = FontWeight.SemiBold)
+            Spacer(modifier = Modifier.height(22.dp))
+
+            Text(competitionScorers?.scorers[0]?.player?.name ?: "NAME", fontSize = 24.sp)
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Text(competitionScorers?.scorers[1]?.player?.name ?: "NAME", fontSize = 24.sp)
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Text(competitionScorers?.scorers[2]?.player?.name ?: "NAME", fontSize = 24.sp)
+
+        }
     }
 }
 
@@ -158,12 +268,14 @@ fun StandingsDisplay(standings: Table, navHostController: NavHostController, mod
                 .fillMaxWidth()
                 .height(50.dp)
                 .background(
-                    if(standings.position in listOf(1,2,3,4)) {
+                    if (standings.position in listOf(1, 2, 3, 4)) {
                         blueLight
-                } else {
-                    Color.LightGray
-                })
-                .padding(4.dp).clickable {
+                    } else {
+                        Color.LightGray
+                    }
+                )
+                .padding(4.dp)
+                .clickable {
                     navHostController.navigate(route = "teams/" + "${standings.team.id}")
                 },
             verticalAlignment = Alignment.CenterVertically
@@ -240,9 +352,9 @@ fun ScorersDisplay(scorers: Scorers, navHostController: NavHostController, modif
             .height(50.dp)
             .background(
 
-                    blueLight
+                blueLight
 
-                 )
+            )
             .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -304,7 +416,8 @@ fun LabelStandingsDisplay(label: List<String>, modifier: Modifier = Modifier) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp).background(Color.DarkGray)
+            .height(50.dp)
+            .background(Color.DarkGray)
             .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -377,7 +490,8 @@ fun LabelStatsDisplay(label: List<String>, modifier: Modifier = Modifier) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp).background(Color.DarkGray)
+            .height(50.dp)
+            .background(Color.DarkGray)
             .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

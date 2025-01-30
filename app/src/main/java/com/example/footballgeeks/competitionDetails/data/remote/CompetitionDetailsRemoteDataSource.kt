@@ -40,9 +40,9 @@ class CompetitionDetailsRemoteDataSource(private val competitionDetailsService: 
         }
     }
 
-    override suspend fun getCompetitionScorers(id: String): Result<StatsPlayerDTO?> {
+    override suspend fun getCompetitionScorers(id: String, season:String): Result<StatsPlayerDTO?> {
         return try {
-            val response = competitionDetailsService.getCompetitionScorers(id)
+            val response = competitionDetailsService.getCompetitionScorers(id, season)
             if (response.isSuccessful) {
                 val match = response.body()
                 Result.success(match)
