@@ -14,3 +14,6 @@ val transparent = Color(0x00FFFEFF)
 val backgroudGame = Color(0xFFACE2FA)
 
 val blueLight = Color(0xFF7BBEF1)
+val colorNav = Color(0xB265CDFA)
+
+val gamesColor = Color(0xB29BE0FC)

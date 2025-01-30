@@ -2,6 +2,7 @@ package com.example.footballgeeks.teamsList.presentation.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,7 +55,10 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.example.footballgeeks.common.remote.model.Team
 import com.example.footballgeeks.common.remote.model.TeamDetails
+import com.example.footballgeeks.ui.theme.colorNav
+import com.example.footballgeeks.ui.theme.gamesColor
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlin.text.capitalize
 
 @Composable
 fun TeamsListScreen(teamsListViewModel: TeamsListViewModel, navHostController: NavHostController, modifier: Modifier = Modifier) {
@@ -73,7 +77,7 @@ fun TeamsListContent(teams: TeamsListUIState, teamsListViewModel: TeamsListViewM
         Box {
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.LightGray)
+                .background(colorNav)
                 .padding(12.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally) {
@@ -89,47 +93,37 @@ fun TeamsListContent(teams: TeamsListUIState, teamsListViewModel: TeamsListViewM
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Back Button"
                         )
-                    }
-                    Row(modifier = Modifier.fillMaxWidth(),
+                    }}
+                    /*Row(modifier = Modifier,
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Image(
-                            painter = rememberAsyncImagePainter("https://crests.football-data.org/3.png"),
-                            contentDescription = null, // Descrição para acessibilidade
-                            modifier = Modifier
-                                .size(30.dp) // Tamanho da imagem
-                                ,
-                            contentScale = ContentScale.Crop
-                        )
-                        Spacer(modifier = modifier.width(4.dp))
-                        Image(
-                            painter = rememberAsyncImagePainter("https://crests.football-data.org/4.png"),
-                            contentDescription = null, // Descrição para acessibilidade
-                            modifier = Modifier
-                                .size(30.dp) // Tamanho da imagem
-                                ,
-                            contentScale = ContentScale.Crop
-                        )
-                        Spacer(modifier = modifier.width(4.dp))
-
-                        Image(
-                            painter = rememberAsyncImagePainter("https://crests.football-data.org/5.png"),
-                            contentDescription = null, // Descrição para acessibilidade
-                            modifier = Modifier
-                                .size(30.dp) // Tamanho da imagem
-                                ,
-                            contentScale = ContentScale.Crop
-                        )
-
-                    }
+                        val indexes = listOf(0,1,2)
+                        val navbar = listOf("landingPage","teams","competitions")
+                        val labels = listOf("matches","teams","competitions")
+                        val emblems = listOf("","https://crests.football-data.org/2061.png", "https://crests.football-data.org/PL.png")
+                        Box(modifier = modifier.padding(8.dp).clickable {navHostController.navigate(route = navbar[1])}) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Bottom) {
+                                Image(
+                                    painter = rememberAsyncImagePainter(emblems[1]),
+                                    contentDescription = null, // Descrição para acessibilidade
+                                    modifier = Modifier
+                                        .size(72.dp) // Tamanho da imagem
+                                    ,
+                                    contentScale = ContentScale.Crop
+                                )
+                                Spacer(modifier = modifier.size(2.dp))
+                                Text(text = "${labels[1].capitalize()}", fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                            }
+                        }
+                    }*/
 
                     /*Text(
                     modifier = Modifier.padding(start = 4.dp),
                     text = movie?.title ?: "Empty title", fontSize = 48.sp,
 
                 )*/
-                }}
+                }
         }
         ERSearchBar("Search a team", query, onValueChange = {
             query = it
@@ -161,7 +155,7 @@ fun EachRowGameDisplay(team: TeamDetails?) {
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .background(Color.LightGray).padding(4.dp),
+            .background(gamesColor).padding(4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
