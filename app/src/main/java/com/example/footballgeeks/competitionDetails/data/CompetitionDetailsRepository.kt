@@ -38,9 +38,9 @@ class CompetitionDetailsRepository(private val competitionDetailsRemoteDataSourc
         } as Result<CompetitionsDetailsStandings>
     }
 
-    suspend fun getCompetitionScorers(id: String): Result<StatsPlayerDTO> {
+    suspend fun getCompetitionScorers(id: String, season: String): Result<StatsPlayerDTO> {
         return try {
-            val result = competitionDetailsRemoteDataSource.getCompetitionScorers(id)
+            val result = competitionDetailsRemoteDataSource.getCompetitionScorers(id, season)
             if (result.isSuccess) {
                 val match = result.getOrNull()
                 Result.success(match)

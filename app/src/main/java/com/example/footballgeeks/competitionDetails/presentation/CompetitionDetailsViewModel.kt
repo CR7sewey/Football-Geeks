@@ -12,6 +12,7 @@ import com.example.footballgeeks.common.remote.model.CompetitionDetails
 import com.example.footballgeeks.common.remote.model.CompetitionsDetailsDTO
 import com.example.footballgeeks.common.remote.model.CompetitionsDetailsStandings
 import com.example.footballgeeks.common.remote.model.Match
+import com.example.footballgeeks.common.remote.model.Season
 import com.example.footballgeeks.common.remote.model.StatsPlayerDTO
 import com.example.footballgeeks.competitionDetails.data.CompetitionDetailsRepository
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +31,9 @@ class CompetitionDetailsViewModel(private val competitionDetailsRepository: Comp
 
     private val _uiCompetitionScorers = MutableStateFlow<StatsPlayerDTO?>(null)
     val uiCompetitionScorers: StateFlow<StatsPlayerDTO?> = _uiCompetitionScorers
+
+    private val _seasonUsed = MutableStateFlow<String>("")
+    val seasonUsed: StateFlow<String> = _seasonUsed
 
     private val _uiErrorMessage = MutableStateFlow<String>("")
     val uiErrorMessage: StateFlow<String> = _uiErrorMessage
@@ -121,10 +125,11 @@ class CompetitionDetailsViewModel(private val competitionDetailsRepository: Comp
         }
     }
 
-    fun fetchDataCompetitionScorers(id: String) {
+    fun fetchDataCompetitionScorers(id: String, season: String = "") {
         viewModelScope.launch(Dispatchers.IO) {
             var scorers: StatsPlayerDTO? = null
-            var response = competitionDetailsRepository.getCompetitionScorers(id)
+            Log.d("TEST 1", season)
+            var response = competitionDetailsRepository.getCompetitionScorers(id, season)
             if (response.isSuccess) {
                 Log.d("AQUI 2", response.getOrNull().toString())
                 scorers = response.getOrNull()
@@ -146,6 +151,10 @@ class CompetitionDetailsViewModel(private val competitionDetailsRepository: Comp
                 }
             }
         }
+    }
+
+    fun setSeason(value: String) {
+        _seasonUsed.value = value
     }
 
 

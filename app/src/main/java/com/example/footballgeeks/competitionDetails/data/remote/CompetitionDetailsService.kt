@@ -6,6 +6,7 @@ import com.example.footballgeeks.common.remote.model.StatsPlayerDTO
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface CompetitionDetailsService {
     @GET("competitions/{code}")
@@ -15,6 +16,6 @@ interface CompetitionDetailsService {
     suspend fun getCompetitionStandings(@Path("id") id: String): Response<CompetitionsDetailsStandings>
 
     @GET("competitions/{id}/scorers")
-    suspend fun getCompetitionScorers(@Path("id") id: String): Response<StatsPlayerDTO>
+    suspend fun getCompetitionScorers(@Path("id") id: String, @Query("season") season: String): Response<StatsPlayerDTO>
 
 }

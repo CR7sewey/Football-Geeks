@@ -9,5 +9,5 @@ interface CompetitionDetailsDataSource {
 
     suspend fun getCompetitionStandings(id: String): Result<CompetitionsDetailsStandings?>
 
-    suspend fun getCompetitionScorers(id: String): Result<StatsPlayerDTO?>
+    suspend fun getCompetitionScorers(id: String, season: String): Result<StatsPlayerDTO?>
 }
