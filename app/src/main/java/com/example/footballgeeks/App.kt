@@ -18,6 +18,7 @@ import com.example.footballgeeks.competitionDetails.presentation.CompetitionDeta
 import com.example.footballgeeks.competitionDetails.presentation.ui.CompetitionDetailsPageScreen
 import com.example.footballgeeks.competitionsList.presentation.CompetitionsListViewModel
 import com.example.footballgeeks.competitionsList.presentation.ui.CompetitionsScreen
+import com.example.footballgeeks.playersList.PlayersListScreen
 import com.example.footballgeeks.teamDetails.presentation.TeamDetailsViewModel
 import com.example.footballgeeks.teamDetails.presentation.ui.TeamDetailsScreen
 import com.example.footballgeeks.teamsList.presentation.TeamsListViewModel
@@ -67,6 +68,9 @@ fun App(landingPageViewModel: LandingPageViewModel,
         }
         composable(route= "competitions" + "/{code}", arguments = listOf(navArgument("code"){type = NavType.StringType})) { backStateEntry ->
             CompetitionDetailsPageScreen(competitionDetailsViewModel, requireNotNull(backStateEntry.arguments?.getString("code").toString()), navController)
+        }
+        composable(route= "players") {
+            PlayersListScreen()
         }
     }
     
