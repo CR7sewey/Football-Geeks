@@ -6,6 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface PlayersListService {
-    @GET("players/{id}")
+    @GET("persons/{id}")
     suspend fun getPlayer(@Path("id") id: String): Response<PersonDTO>
 }
