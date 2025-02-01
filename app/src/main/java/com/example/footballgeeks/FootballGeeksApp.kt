@@ -13,6 +13,9 @@ import com.example.footballgeeks.gameDetails.data.remote.MatchDetailsService
 import com.example.footballgeeks.landingPage.data.LandingPageRepository
 import com.example.footballgeeks.landingPage.data.remote.LandingPageRemoteDataSource
 import com.example.footballgeeks.landingPage.data.remote.LandingPageService
+import com.example.footballgeeks.playersList.data.PlayersListRepository
+import com.example.footballgeeks.playersList.data.remote.PlayersListRemoteDataSource
+import com.example.footballgeeks.playersList.data.remote.PlayersListService
 import com.example.footballgeeks.teamDetails.data.TeamDetailsRepository
 import com.example.footballgeeks.teamDetails.data.remote.TeamDetailsRemoteDataSource
 import com.example.footballgeeks.teamDetails.data.remote.TeamDetailsService
@@ -93,4 +96,16 @@ class FootballGeeksApp: Application() {
     val competitionDetailsRepository: CompetitionDetailsRepository by lazy {
         CompetitionDetailsRepository(competitionDetailsRemoteDataSource)
     }
+
+    // --
+    private val playersListService: PlayersListService by lazy {
+        RetroFitClient.retrofit.create(PlayersListService::class.java)
+    }
+    private val playersListRemoteDataSource: PlayersListRemoteDataSource by lazy {
+        PlayersListRemoteDataSource(playersListService)
+    }
+    val playersListRepository: PlayersListRepository by lazy {
+        PlayersListRepository(playersListRemoteDataSource)
+    }
+
 }

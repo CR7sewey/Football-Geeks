@@ -30,10 +30,10 @@ import com.example.footballgeeks.ui.theme.colorNav
 
 @Composable
 fun Test(navHostController: NavHostController, modifier: Modifier = Modifier) {
-    val indexes = listOf(0,1,2)
-    val navbar = listOf("landingPage","teams","competitions")
-    val labels = listOf("matches","teams","competitions")
-    val emblems = listOf("","https://crests.football-data.org/2061.png", "https://crests.football-data.org/PL.png")
+    val indexes = listOf(0,1,2,3)
+    val navbar = listOf("landingPage","teams","competitions","players")
+    val labels = listOf("matches","teams","competitions","players")
+    val emblems = listOf("","https://crests.football-data.org/2061.png", "https://crests.football-data.org/PL.png", "https://rendersdeboleiro.wordpress.com/wp-content/uploads/2013/03/untitled-1-copy29.png")
     LazyRow(modifier = modifier.fillMaxWidth().padding(8.dp)) {
         items(indexes) { current ->
             Box(modifier = modifier.background(colorNav, shape = RoundedCornerShape(4.dp)).padding(8.dp).clickable {navHostController.navigate(route = navbar[current])}) {
