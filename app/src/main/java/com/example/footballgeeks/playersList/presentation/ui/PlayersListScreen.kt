@@ -65,8 +65,15 @@ fun PlayersListContent(navHostController: NavHostController, modifier: Modifier 
 
             }
         }
-        val emblems = "https://rendersdeboleiro.wordpress.com/wp-content/uploads/2013/03/untitled-1-copy29.png"
+        val emblems = "https://i.pinimg.com/736x/17/94/51/1794517c612b1abd4a8b7eac83dfdfb8.jpg"
         Spacer(modifier = modifier.size(52.dp))
+        Button(onClick = {
+            val num = Random.nextInt(0,1000)
+            navHostController.navigate(route = "players/$num") }) {
+            Text("Random Player")
+        }
+        Spacer(modifier = modifier.size(2.dp))
+
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Bottom) {
             Image(
                 painter = rememberAsyncImagePainter(emblems),
@@ -77,11 +84,6 @@ fun PlayersListContent(navHostController: NavHostController, modifier: Modifier 
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = modifier.size(2.dp))
-        }
-        Button(onClick = {
-            val num = Random.nextInt(0,1000)
-            navHostController.navigate(route = "players/$num") }) {
-            Text("Random Player")
         }
     }
 }
