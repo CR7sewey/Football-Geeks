@@ -39,7 +39,7 @@ class FootballGeeksApp: Application() {
 
     val landingPageRepository: LandingPageRepository by lazy {
         LandingPageRepository(landingPageRemoteDataSource)
-    }*/
+    }
     // ---
 
     private val matchDetailsService: MatchDetailsService by lazy {
@@ -52,7 +52,7 @@ class FootballGeeksApp: Application() {
 
     val matchDetailsRepository: MatchDetailsRepository by lazy {
         MatchDetailsRepository(matchDetailsRemoteDataSource)
-    }
+    }*/
 //---
     private val teamsListService: TeamsListService by lazy {
         RetroFitClient.retrofit.create(TeamsListService::class.java)

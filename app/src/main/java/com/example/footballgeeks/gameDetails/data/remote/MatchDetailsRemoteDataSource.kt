@@ -2,8 +2,9 @@ package com.example.footballgeeks.gameDetails.data.remote
 
 import android.accounts.NetworkErrorException
 import com.example.footballgeeks.common.remote.model.Match
+import javax.inject.Inject
 
-class MatchDetailsRemoteDataSource(private val matchDetailsService: MatchDetailsService): MatchDetailsDataSource {
+class MatchDetailsRemoteDataSource @Inject constructor(private val matchDetailsService: MatchDetailsService): MatchDetailsDataSource {
     override suspend fun getMatchDetails(id: String): Result<Match?> {
         return try {
             val response = matchDetailsService.getMatchDetails(id)

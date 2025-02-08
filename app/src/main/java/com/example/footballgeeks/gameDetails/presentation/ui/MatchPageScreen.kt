@@ -42,9 +42,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun MatchPageScreen(matchDetailsViewModel: MatchDetailsViewModel, id: String, navHostController: NavHostController, modifier: Modifier = Modifier) {
+fun MatchPageScreen(matchDetailsViewModel: MatchDetailsViewModel = hiltViewModel<MatchDetailsViewModel>(), id: String, navHostController: NavHostController, modifier: Modifier = Modifier) {
     val uiCurrentGame by matchDetailsViewModel.uiCurrentGame.collectAsState()
     matchDetailsViewModel.fetchData(id)
     val uiErrorMessage by matchDetailsViewModel.uiErrorMessage.collectAsState()

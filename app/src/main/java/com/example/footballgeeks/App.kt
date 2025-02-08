@@ -28,7 +28,6 @@ import com.example.footballgeeks.teamsList.presentation.ui.TeamsListScreen
 
 @Composable
 fun App(
-        matchDetailsViewModel: MatchDetailsViewModel,
         teamsListViewModel: TeamsListViewModel,
         teamDetailsViewModel: TeamDetailsViewModel,
         competitionsListViewModel: CompetitionsListViewModel,
@@ -57,7 +56,7 @@ fun App(
         composable(route= "match" + "/{id}", arguments = listOf(navArgument("id"){type = NavType.StringType})) { backStateEntry ->
             Column {
             Test(navController)
-            MatchPageScreen(matchDetailsViewModel, requireNotNull(backStateEntry.arguments?.getString("id").toString()), navController)}
+            MatchPageScreen(id = requireNotNull(backStateEntry.arguments?.getString("id").toString()), navHostController = navController)}
         }
         composable(route= "teams") {
             TeamsListScreen(teamsListViewModel, navController)

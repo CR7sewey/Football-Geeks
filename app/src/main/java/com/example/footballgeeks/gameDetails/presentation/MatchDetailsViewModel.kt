@@ -11,13 +11,16 @@ import com.example.footballgeeks.FootballGeeksApp
 import com.example.footballgeeks.common.remote.model.Match
 import com.example.footballgeeks.gameDetails.data.MatchDetailsRepository
 import com.example.footballgeeks.landingPage.presentation.ui.MatchesListUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MatchDetailsViewModel(private val matchDetailsRepository: MatchDetailsRepository ): ViewModel() {
+@HiltViewModel
+class MatchDetailsViewModel @Inject constructor(private val matchDetailsRepository: MatchDetailsRepository ): ViewModel() {
 
     private val _uiCurrentGame = MutableStateFlow<Match?>(null)
     val uiCurrentGame: StateFlow<Match?> = _uiCurrentGame
@@ -26,7 +29,7 @@ class MatchDetailsViewModel(private val matchDetailsRepository: MatchDetailsRepo
     val uiErrorMessage: StateFlow<String> = _uiErrorMessage
 
 
-    companion object {
+   /* companion object {
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
 
             @Suppress("UNCHECKED_CAST")
@@ -39,7 +42,7 @@ class MatchDetailsViewModel(private val matchDetailsRepository: MatchDetailsRepo
             }
 
         }
-    }
+    }*/
 
     fun cleanId() {
         viewModelScope.launch {

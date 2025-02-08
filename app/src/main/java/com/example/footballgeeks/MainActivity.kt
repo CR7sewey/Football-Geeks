@@ -25,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     /*private val landingPageViewModel by viewModels<LandingPageViewModel> { LandingPageViewModel.Factory } */
-    private val matchDetailsViewModel by viewModels<MatchDetailsViewModel> { MatchDetailsViewModel.Factory }
+   // private val matchDetailsViewModel by viewModels<MatchDetailsViewModel> { MatchDetailsViewModel.Factory }
     private val teamsListViewModel by viewModels<TeamsListViewModel> { TeamsListViewModel.Factory }
     private val teamDetailsViewModel by viewModels<TeamDetailsViewModel> { TeamDetailsViewModel.Factory }
     private val competitionsListViewModel by viewModels<CompetitionsListViewModel> { CompetitionsListViewModel.Factory }
@@ -40,8 +40,6 @@ class MainActivity : ComponentActivity() {
             FootballGeeksTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     App(
-
-                        matchDetailsViewModel,
                         teamsListViewModel,
                         teamDetailsViewModel,
                         competitionsListViewModel,
