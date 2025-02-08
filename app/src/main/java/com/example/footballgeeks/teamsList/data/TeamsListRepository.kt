@@ -1,14 +1,13 @@
 package com.example.footballgeeks.teamsList.data
 
 import android.accounts.NetworkErrorException
-import com.example.footballgeeks.common.remote.model.Match
-import com.example.footballgeeks.common.remote.model.Team
 import com.example.footballgeeks.common.remote.model.TeamDetails
 import com.example.footballgeeks.teamsList.data.remote.TeamsListRemoteDataSource
+import javax.inject.Inject
 
-class TeamsListRepository(private val teamsListRemoteDataSource: TeamsListRemoteDataSource) {
+class TeamsListRepository @Inject constructor(private val teamsListRemoteDataSource: TeamsListRemoteDataSource): TeamListRepositoryInterface {
 
-    suspend fun getTeams(): Result<List<TeamDetails>?> {
+    override suspend fun getTeams(): Result<List<TeamDetails>?> {
         return try {
             val result = teamsListRemoteDataSource.getTeams()
             if (result.isSuccess) {

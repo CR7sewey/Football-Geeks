@@ -17,13 +17,16 @@ import com.example.footballgeeks.landingPage.presentation.ui.MatchesListUiState
 import com.example.footballgeeks.teamsList.data.TeamsListRepository
 import com.example.footballgeeks.teamsList.presentation.ui.TeamsListUIState
 import com.example.mycinema.common.data.remote.RetroFitClient
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.Int
 
-class TeamsListViewModel(private val teamsListRepository: TeamsListRepository): ViewModel() {
+@HiltViewModel
+class TeamsListViewModel @Inject constructor(private val teamsListRepository: TeamsListRepository): ViewModel() {
 
     private val _uiTeams = MutableStateFlow<TeamsListUIState>(TeamsListUIState())
     val uiTeams: StateFlow<TeamsListUIState> = _uiTeams
@@ -31,7 +34,7 @@ class TeamsListViewModel(private val teamsListRepository: TeamsListRepository): 
     private val _uiErrorMessage = MutableStateFlow<String>("")
     val uiErrorMessage: StateFlow<String> = _uiErrorMessage
 
-    companion object {
+    /*companion object {
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
 
             @Suppress("UNCHECKED_CAST")
@@ -46,7 +49,7 @@ class TeamsListViewModel(private val teamsListRepository: TeamsListRepository): 
             }
 
         }
-    }
+    }*/
 
     init {
         fetchData()

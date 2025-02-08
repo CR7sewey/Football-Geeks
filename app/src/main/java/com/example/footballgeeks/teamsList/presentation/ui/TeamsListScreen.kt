@@ -49,6 +49,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
@@ -61,7 +62,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.text.capitalize
 
 @Composable
-fun TeamsListScreen(teamsListViewModel: TeamsListViewModel, navHostController: NavHostController, modifier: Modifier = Modifier) {
+fun TeamsListScreen(teamsListViewModel: TeamsListViewModel = hiltViewModel<TeamsListViewModel>(), navHostController: NavHostController, modifier: Modifier = Modifier) {
     val uiTeams by teamsListViewModel.uiTeams.collectAsState()
 
     TeamsListContent(uiTeams, teamsListViewModel, navHostController)
