@@ -4,8 +4,9 @@ import android.accounts.NetworkErrorException
 import com.example.footballgeeks.common.remote.model.CompetitionsDetailsDTO
 import com.example.footballgeeks.common.remote.model.CompetitionsDetailsStandings
 import com.example.footballgeeks.common.remote.model.StatsPlayerDTO
+import javax.inject.Inject
 
-class CompetitionDetailsRemoteDataSource(private val competitionDetailsService: CompetitionDetailsService): CompetitionDetailsDataSource {
+class CompetitionDetailsRemoteDataSource @Inject constructor(private val competitionDetailsService: CompetitionDetailsService): CompetitionDetailsDataSource {
     override suspend fun getCompetitionDetails(code: String): Result<CompetitionsDetailsDTO?> {
             return try {
                 val response = competitionDetailsService.getCompetitionDetails(code)

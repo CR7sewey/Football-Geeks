@@ -87,7 +87,7 @@ class FootballGeeksApp: Application() {
     val competitionsListRepository: CompetitionsListRepository by lazy {
         CompetitionsListRepository(competitionsListRemoteDataSource)
     }
-*/
+
     // --
     private val competitionDetailsService: CompetitionDetailsService by lazy {
         RetroFitClient.retrofit.create(CompetitionDetailsService::class.java)
@@ -98,7 +98,7 @@ class FootballGeeksApp: Application() {
     val competitionDetailsRepository: CompetitionDetailsRepository by lazy {
         CompetitionDetailsRepository(competitionDetailsRemoteDataSource)
     }
-
+*/
     // --
     private val playersListService: PlayersListService by lazy {
         RetroFitClient.retrofit.create(PlayersListService::class.java)

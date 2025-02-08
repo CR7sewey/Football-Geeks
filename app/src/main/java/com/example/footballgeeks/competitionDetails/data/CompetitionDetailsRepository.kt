@@ -5,10 +5,11 @@ import com.example.footballgeeks.common.remote.model.CompetitionsDetailsDTO
 import com.example.footballgeeks.common.remote.model.CompetitionsDetailsStandings
 import com.example.footballgeeks.common.remote.model.StatsPlayerDTO
 import com.example.footballgeeks.competitionDetails.data.remote.CompetitionDetailsRemoteDataSource
+import javax.inject.Inject
 
-class CompetitionDetailsRepository(private val competitionDetailsRemoteDataSource: CompetitionDetailsRemoteDataSource) {
+class CompetitionDetailsRepository @Inject constructor(private val competitionDetailsRemoteDataSource: CompetitionDetailsRemoteDataSource): CompetitionDetailsRepositoryInterface {
 
-    suspend fun getCompetitionDetails(code: String): Result<CompetitionsDetailsDTO> {
+    override suspend fun getCompetitionDetails(code: String): Result<CompetitionsDetailsDTO> {
         return try {
             val result = competitionDetailsRemoteDataSource.getCompetitionDetails(code)
             if (result.isSuccess) {
@@ -23,7 +24,7 @@ class CompetitionDetailsRepository(private val competitionDetailsRemoteDataSourc
         } as Result<CompetitionsDetailsDTO>
     }
 
-    suspend fun getCompetitionStandings(id: String): Result<CompetitionsDetailsStandings> {
+    override suspend fun getCompetitionStandings(id: String): Result<CompetitionsDetailsStandings> {
         return try {
             val result = competitionDetailsRemoteDataSource.getCompetitionStandings(id)
             if (result.isSuccess) {
@@ -38,7 +39,7 @@ class CompetitionDetailsRepository(private val competitionDetailsRemoteDataSourc
         } as Result<CompetitionsDetailsStandings>
     }
 
-    suspend fun getCompetitionScorers(id: String, season: String): Result<StatsPlayerDTO> {
+    override suspend fun getCompetitionScorers(id: String, season: String): Result<StatsPlayerDTO> {
         return try {
             val result = competitionDetailsRemoteDataSource.getCompetitionScorers(id, season)
             if (result.isSuccess) {

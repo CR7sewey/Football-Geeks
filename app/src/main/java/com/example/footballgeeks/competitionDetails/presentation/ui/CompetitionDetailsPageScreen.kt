@@ -40,6 +40,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.footballgeeks.common.remote.model.CompetitionDetails
@@ -54,7 +55,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.Year
 
 @Composable
-fun CompetitionDetailsPageScreen(competitionDetailsViewModel: CompetitionDetailsViewModel, code:String, navController: NavHostController, modifier: Modifier = Modifier) {
+fun CompetitionDetailsPageScreen(competitionDetailsViewModel: CompetitionDetailsViewModel = hiltViewModel<CompetitionDetailsViewModel>(), code:String, navController: NavHostController, modifier: Modifier = Modifier) {
     val competition by competitionDetailsViewModel.uiCompetition.collectAsState()
     competitionDetailsViewModel.fetchDataCompetition(code)
     val competitionStandings by competitionDetailsViewModel.uiCompetitionStandings.collectAsState()

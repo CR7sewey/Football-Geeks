@@ -15,13 +15,16 @@ import com.example.footballgeeks.common.remote.model.Match
 import com.example.footballgeeks.common.remote.model.Season
 import com.example.footballgeeks.common.remote.model.StatsPlayerDTO
 import com.example.footballgeeks.competitionDetails.data.CompetitionDetailsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CompetitionDetailsViewModel(private val competitionDetailsRepository: CompetitionDetailsRepository): ViewModel() {
+@HiltViewModel
+class CompetitionDetailsViewModel @Inject constructor(private val competitionDetailsRepository: CompetitionDetailsRepository): ViewModel() {
 
     private val _uiCompetition = MutableStateFlow<CompetitionsDetailsDTO?>(null)
     val uiCompetition: StateFlow<CompetitionsDetailsDTO?> = _uiCompetition
@@ -38,7 +41,7 @@ class CompetitionDetailsViewModel(private val competitionDetailsRepository: Comp
     private val _uiErrorMessage = MutableStateFlow<String>("")
     val uiErrorMessage: StateFlow<String> = _uiErrorMessage
 
-    companion object {
+    /*companion object {
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
 
             @Suppress("UNCHECKED_CAST")
@@ -51,7 +54,7 @@ class CompetitionDetailsViewModel(private val competitionDetailsRepository: Comp
             }
 
         }
-    }
+    }*/
 
     fun cleanCodeId() {
         viewModelScope.launch {
