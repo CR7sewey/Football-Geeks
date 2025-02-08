@@ -3,10 +3,11 @@ package com.example.footballgeeks.landingPage.data
 import android.accounts.NetworkErrorException
 import com.example.footballgeeks.common.remote.model.Match
 import com.example.footballgeeks.landingPage.data.remote.LandingPageRemoteDataSource
+import javax.inject.Inject
 
-class LandingPageRepository(private val landingPageRemoteDataSource: LandingPageRemoteDataSource) {
+class LandingPageRepository @Inject constructor(private val landingPageRemoteDataSource: LandingPageRemoteDataSource): LandingRepository {
 
-    suspend fun getMatches(): Result<List<Match>> {
+    override suspend fun getMatches(): Result<List<Match>> {
         return try {
             val result = landingPageRemoteDataSource.getMatches()
             if (result.isSuccess) {

@@ -27,7 +27,7 @@ import com.example.footballgeeks.teamsList.presentation.TeamsListViewModel
 import com.example.footballgeeks.teamsList.presentation.ui.TeamsListScreen
 
 @Composable
-fun App(landingPageViewModel: LandingPageViewModel,
+fun App(
         matchDetailsViewModel: MatchDetailsViewModel,
         teamsListViewModel: TeamsListViewModel,
         teamDetailsViewModel: TeamDetailsViewModel,
@@ -51,7 +51,7 @@ fun App(landingPageViewModel: LandingPageViewModel,
         composable(route= "landingPage") {
             Column {
                 Test(navController)
-                LandingPageScreen(landingPageViewModel, navController)
+                LandingPageScreen(navHostController = navController)
             }
         }
         composable(route= "match" + "/{id}", arguments = listOf(navArgument("id"){type = NavType.StringType})) { backStateEntry ->

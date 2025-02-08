@@ -37,6 +37,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.SvgDecoder
@@ -50,11 +51,12 @@ import coil.size.Size
 import com.example.footballgeeks.landingPage.presentation.LandingPageViewModel
 import com.example.footballgeeks.ui.theme.blueLight
 import com.example.footballgeeks.ui.theme.gamesColor
+import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Callback
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LandingPageScreen(landingPageViewModel: LandingPageViewModel, navHostController: NavHostController, modifier: Modifier = Modifier) {
+fun LandingPageScreen(landingPageViewModel: LandingPageViewModel = hiltViewModel<LandingPageViewModel>(), navHostController: NavHostController, modifier: Modifier = Modifier) {
 
     val uiCurrentGames by landingPageViewModel.uiCurrentGames.collectAsState()
 

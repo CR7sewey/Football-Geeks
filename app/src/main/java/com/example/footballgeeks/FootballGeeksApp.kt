@@ -23,10 +23,12 @@ import com.example.footballgeeks.teamsList.data.TeamsListRepository
 import com.example.footballgeeks.teamsList.data.remote.TeamsListRemoteDataSource
 import com.example.footballgeeks.teamsList.data.remote.TeamsListService
 import com.example.mycinema.common.data.remote.RetroFitClient
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class FootballGeeksApp: Application() {
 
-
+/*
     private val landingPageService: LandingPageService by lazy {
         RetroFitClient.retrofit.create(LandingPageService::class.java)
     }
@@ -37,7 +39,7 @@ class FootballGeeksApp: Application() {
 
     val landingPageRepository: LandingPageRepository by lazy {
         LandingPageRepository(landingPageRemoteDataSource)
-    }
+    }*/
     // ---
 
     private val matchDetailsService: MatchDetailsService by lazy {

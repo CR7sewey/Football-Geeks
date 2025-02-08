@@ -16,11 +16,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import com.example.footballgeeks.dependencyInjection.DispatcherIO
 import com.example.footballgeeks.landingPage.data.LandingPageRepository
 import com.example.footballgeeks.landingPage.presentation.ui.MatchesListUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import javax.inject.Inject
 
-
-class LandingPageViewModel(private val landingPageRepository: LandingPageRepository): ViewModel() {
+@HiltViewModel
+class LandingPageViewModel @Inject constructor(private val landingPageRepository: LandingPageRepository, @DispatcherIO private val dispatcher: CoroutineDispatcher = Dispatchers.IO): ViewModel() {
 
     private val _uiCurrentGames = MutableStateFlow<MatchesListUiState>(MatchesListUiState())
     val uiCurrentGames: StateFlow<MatchesListUiState> = _uiCurrentGames
@@ -28,7 +32,7 @@ class LandingPageViewModel(private val landingPageRepository: LandingPageReposit
     private val _uiErrorMessage = MutableStateFlow<String>("")
     val uiErrorMessage: StateFlow<String> = _uiErrorMessage
 
-    companion object {
+    /*companion object {
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
 
             @Suppress("UNCHECKED_CAST")
@@ -43,14 +47,14 @@ class LandingPageViewModel(private val landingPageRepository: LandingPageReposit
             }
 
         }
-    }
+    }*/
 
     init {
         fetchData()
     }
 
     private fun fetchData() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
                 var currentGames: List<Match> = emptyList()
                 var response = landingPageRepository.getMatches()
                 _uiCurrentGames.value = MatchesListUiState(isLoading = true)
