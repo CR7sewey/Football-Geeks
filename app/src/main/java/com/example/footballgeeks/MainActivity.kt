@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
    // private val matchDetailsViewModel by viewModels<MatchDetailsViewModel> { MatchDetailsViewModel.Factory }
    // private val teamsListViewModel by viewModels<TeamsListViewModel> { TeamsListViewModel.Factory }
     //private val teamDetailsViewModel by viewModels<TeamDetailsViewModel> { TeamDetailsViewModel.Factory }
-    private val competitionsListViewModel by viewModels<CompetitionsListViewModel> { CompetitionsListViewModel.Factory }
+    //private val competitionsListViewModel by viewModels<CompetitionsListViewModel> { CompetitionsListViewModel.Factory }
     private val competitionDetailsViewModel by viewModels<CompetitionDetailsViewModel> { CompetitionDetailsViewModel.Factory }
     private val playersListViewModel by viewModels<PlayersListViewModel> { PlayersListViewModel.Factory }
 
@@ -40,8 +40,6 @@ class MainActivity : ComponentActivity() {
             FootballGeeksTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     App(
-
-                        competitionsListViewModel,
                         competitionDetailsViewModel,
                         playersListViewModel,
                         modifier = Modifier.padding(innerPadding)

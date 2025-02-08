@@ -44,6 +44,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.footballgeeks.common.remote.model.Competition
@@ -52,7 +53,7 @@ import com.example.footballgeeks.common.remote.model.TeamDetails
 import com.example.footballgeeks.competitionsList.presentation.CompetitionsListViewModel
 
 @Composable
-fun CompetitionsScreen(competitionsListViewModel: CompetitionsListViewModel, navHostController: NavHostController ,modifier: Modifier = Modifier) {
+fun CompetitionsScreen(competitionsListViewModel: CompetitionsListViewModel = hiltViewModel<CompetitionsListViewModel>(), navHostController: NavHostController, modifier: Modifier = Modifier) {
     val uiCompetitions by competitionsListViewModel.uiCompetitions.collectAsState()
 
     CompetitionsListContent(uiCompetitions, competitionsListViewModel, navHostController, onClick = {itemClicked: CompetitionDetails -> navHostController.navigate(route = "competitions/${itemClicked.code}")})
