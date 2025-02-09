@@ -12,7 +12,6 @@ import androidx.navigation.navArgument
 import com.example.footballgeeks.gameDetails.presentation.MatchDetailsViewModel
 import com.example.footballgeeks.gameDetails.presentation.ui.MatchPageScreen
 import com.example.footballgeeks.landingPage.presentation.LandingPageViewModel
-import com.example.footballgeeks.landingPage.presentation.ui.LandingPageScreen
 import androidx.compose.runtime.getValue
 import com.example.footballgeeks.competitionDetails.presentation.CompetitionDetailsViewModel
 import com.example.footballgeeks.competitionDetails.presentation.ui.CompetitionDetailsPageScreen
@@ -25,6 +24,7 @@ import com.example.footballgeeks.teamDetails.presentation.TeamDetailsViewModel
 import com.example.footballgeeks.teamDetails.presentation.ui.TeamDetailsScreen
 import com.example.footballgeeks.teamsList.presentation.TeamsListViewModel
 import com.example.footballgeeks.teamsList.presentation.ui.TeamsListScreen
+import com.example.landingpage.landingPage.presentation.ui.LandingPageScreen
 
 @Composable
 fun App(
