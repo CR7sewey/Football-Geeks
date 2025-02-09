@@ -79,6 +79,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
 
+    //Landing Page
+    implementation(project(":LandingPage"))
+
 
     // RETROFIT
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
