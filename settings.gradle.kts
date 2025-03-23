@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Football Geeks"
 include(":app")
-include(":LandingPage")

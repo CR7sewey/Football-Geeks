@@ -79,8 +79,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
 
-    //Landing Page
-    implementation(project(":LandingPage"))
 
 
     // RETROFIT

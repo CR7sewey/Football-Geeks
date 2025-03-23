@@ -17,6 +17,7 @@ import com.example.footballgeeks.competitionDetails.presentation.CompetitionDeta
 import com.example.footballgeeks.competitionDetails.presentation.ui.CompetitionDetailsPageScreen
 import com.example.footballgeeks.competitionsList.presentation.CompetitionsListViewModel
 import com.example.footballgeeks.competitionsList.presentation.ui.CompetitionsScreen
+import com.example.footballgeeks.landingPage.presentation.ui.LandingPageScreen
 import com.example.footballgeeks.playersList.presentation.PlayersListViewModel
 import com.example.footballgeeks.playersList.presentation.ui.PlayerDetailsScreen
 import com.example.footballgeeks.playersList.presentation.ui.PlayersListScreen
@@ -24,7 +25,6 @@ import com.example.footballgeeks.teamDetails.presentation.TeamDetailsViewModel
 import com.example.footballgeeks.teamDetails.presentation.ui.TeamDetailsScreen
 import com.example.footballgeeks.teamsList.presentation.TeamsListViewModel
 import com.example.footballgeeks.teamsList.presentation.ui.TeamsListScreen
-import com.example.landingpage.landingPage.presentation.ui.LandingPageScreen
 
 @Composable
 fun App(

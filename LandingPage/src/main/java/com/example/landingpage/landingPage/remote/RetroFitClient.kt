@@ -1,6 +1,6 @@
 package com.example.mycinema.common.data.remote
 
-import com.example.footballgeeks.BuildConfig
+import com.example.landingpage.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
