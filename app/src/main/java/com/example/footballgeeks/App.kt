@@ -44,10 +44,10 @@ fun App(
             EntryScreen(navController)
         }
         composable(route= "landingPage") {
-            Column {
-                Test(navController)
+
+
                 LandingPageScreen(navHostController = navController)
-            }
+
         }
         composable(route= "match" + "/{id}", arguments = listOf(navArgument("id"){type = NavType.StringType})) { backStateEntry ->
             Column {

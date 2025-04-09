@@ -1,15 +1,19 @@
 package com.example.footballgeeks.landingPage.presentation.ui
 
+import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,10 +22,23 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +51,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -95,31 +114,221 @@ fun LandingPageScreen(landingPageViewModel: LandingPageViewModel = hiltViewModel
 
 @Composable
 private fun LandingScreenContent(matches: MatchesListUiState, onClick: (itemClicked: Match) -> Unit,navHostController: NavHostController, modifier: Modifier = Modifier) {
-    val context = LocalContext.current
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        if (matches.isError == false && !matches.list.isEmpty()) {
-            LazyColumn {
-                items(matches.list) { current ->
-                    MatchDisplay(current, onClick= onClick)
-                    Spacer(modifier = Modifier.size(8.dp))
-                }
+    Column(modifier = Modifier.fillMaxSize().background(Color.LightGray)) {
+        TopBar(navHostController)
+       /* Text(
+            text = "Current Games",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(16.dp).align()
+        )*/
+        LazyColumn(contentPadding = PaddingValues(16.dp)) {
+            items(matches.list) { game ->
+                MatchTest(game, navHostController)
             }
         }
-        else if (matches.isError == false) {
-            Text("To be done later ...")
-            Button(onClick = {navHostController.navigate("teams")}) { }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBar(navHostController: NavHostController) {
+   // var currentExample by remember { mutableStateOf<(@Composable () -> Unit)?>(null) }
+
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    TopAppBar(
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.primary,
+        ),
+        title = {
+            Text(
+                "Football Geeks",
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                color = Color.White,
+            )
+        },
+        /*navigationIcon = {
+            IconButton(onClick = { /* do something */ }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Localized description"
+                )
+            }
+        },*/
+        actions = {
+
+            IconButton(onClick = {
+
+                //currentExample = { MinimalDropdownMenu() }
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.Menu,
+                    tint = Color.White,
+                    contentDescription = "Localized description"
+                )
+
+                MinimalDropdownMenu(navHostController)
+            }
+        },
+        scrollBehavior = scrollBehavior,
+    )
+}
+
+@Composable
+fun MinimalDropdownMenu(navHostController: NavHostController) {
+    var expanded by remember { mutableStateOf(false) }
+    Box(
+        modifier = Modifier
+            .padding(16.dp)
+    ) {
+        IconButton(onClick = { expanded = !expanded }) {
+            Icon(Icons.Default.MoreVert, contentDescription = "More options")
         }
-        else if (matches.isLoading) {
-            Text("Loading...")
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            DropdownMenuItem(
+                text = { Text("Competitions") },
+                onClick = { navHostController.navigate("competitions") }
+            )
+            DropdownMenuItem(
+                text = { Text("Teams") },
+                onClick = { navHostController.navigate("teams") }
+            )
         }
-        else if (matches.isError) {
-            Toast.makeText(context, matches.errorMessage, Toast.LENGTH_LONG).show()
+    }
+}
+
+@Composable
+fun MatchTest(game: Match, navHostController: NavHostController) {
+    Card(
+        elevation = CardDefaults.cardElevation(4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp).clickable(enabled = true) { navHostController.navigate(route = "match/${game.id}")}
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            TeamInfo(
+                teamName = game.homeTeam.name,
+                teamCrest = game.homeTeam.crest
+            )
+            MatchScore(
+                homeScore = game.score.fullTime.home,
+                awayScore = game.score.fullTime.away,
+                intervalHome = game.score.halfTime.home,
+                intervalAway = game.score.halfTime.away
+            )
+            TeamInfo(
+                teamName = game.awayTeam.name,
+                teamCrest = game.awayTeam.crest
+            )
         }
+
+
+        /*Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val svgPainter = rememberAsyncImagePainter(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(game.area.flag).placeholder(com.example.footballgeeks.R.drawable.ic_launcher_foreground)
+                    .decoderFactory(SvgDecoder.Factory()) // Suporte a SVG
+                    .size(Size.ORIGINAL) // Tamanho original da imagem
+                    .build()
+            )
+            // Imagem que ocupa o espaço da barra
+            // Imagem que ocupa o espaço da barra
+            Spacer(modifier = Modifier.width(10.dp))
+           /* Image(
+                painter = svgPainter,
+                contentDescription = null, // Descrição para acessibilidade
+                modifier = Modifier
+                    .width(60.dp)
+                    .fillMaxHeight(),
+                contentScale = ContentScale.Crop
+            )*/
+
+            Spacer(modifier = Modifier.width(16.dp))
+            Image(
+                painter = rememberAsyncImagePainter(game.homeTeam.crest),
+                contentDescription = null,
+                modifier = Modifier.size(50.dp)
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(game.homeTeam.name, fontWeight = FontWeight.Bold)
+                    Text(game.awayTeam.name, fontWeight = FontWeight.Bold)
+                }
+                Text("FH: ${game.score}", fontSize = 14.sp)
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            Image(
+                painter = rememberAsyncImagePainter(game.awayTeam.crest),
+                contentDescription = null,
+                modifier = Modifier.size(50.dp)
+            )
+
+        }*/
+    }
+}
+
+@Composable
+fun TeamInfo(teamName: String, teamCrest: String) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = rememberAsyncImagePainter(teamCrest),
+            contentDescription = null,
+            modifier = Modifier.size(50.dp)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        /*Text(
+            text = teamName,
+            fontWeight = FontWeight.Bold,
+            fontSize = 14.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )*/
+    }
+}
+
+@Composable
+fun MatchScore(homeScore: Int, awayScore: Int, intervalHome: Int, intervalAway: Int) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "$intervalHome - $intervalAway",
+            fontWeight = FontWeight.Bold,
+            fontSize = 12.sp,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = "$homeScore - $awayScore",
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            color = MaterialTheme.colorScheme.primary
+        )
 
     }
 }
+
 
 @Composable
 private fun MatchDisplay(match: Match, onClick: (itemClicked: Match) -> Unit, modifier: Modifier = Modifier) {
